@@ -1,0 +1,23 @@
+services:
+  - type: web
+    name: qalun-system
+    runtime: python
+    plan: free
+    region: frankfurt
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn --bind 0.0.0.0:$PORT --workers 1 --threads 4 --timeout 60 app:app
+    healthCheckPath: /api/public-config
+    autoDeploy: true
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.9
+      - key: QALUN_DEMO
+        value: "1"
+      - key: COOKIE_SECURE
+        value: "1"
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DATA_REPO
+        value: cheiktouard27-tech/qalun-data
+      - key: GITHUB_TOKEN
+        sync: false
